@@ -1,0 +1,35 @@
+import json
+import boto3
+import string
+import random
+
+# 🚀 Lambda entry point
+def lambda_handler(event, context):
+    
+    N = 10  # 🔢 Length of the new password to generate
+
+    # 🔐 Generate a random password (uppercase letters + digits)
+    newPassword = ''.join(random.choices(string.ascii_uppercase + 
+                                         string.digits, k=N))
+
+    # 🧰 Initialize AWS Secrets Manager client
+    client = boto3.client('secretsmanager')
+
+    # 📥 Fetch the current secret value
+    getRes = client.get_secret_value(
+        SecretId = 'SECRET_NAME'  # 🏷 Replace with your actual secret name
+    )
+
+    # 📦 Load the current secrets as a dictionary
+    current_secrets = json.loads(getRes['SecretString'])
+    
+    # 🔄 Update the key with the new password
+    current_secrets.update({
+        "KEY_TO_ROTATE": newPassword  # 🗝 Replace it "KEY_TO_ROTATE" with your actual key name
+    })
+    
+    # 📤 Push the updated secret back to Secrets Manager
+    response = client.put_secret_value(
+        SecretId = 'SECRET_NAME',  # 🏷 Same secret name as above
+        SecretString=str(json.dumps(current_secrets))  # 🔁 Updated secret as JSON string
+    )
