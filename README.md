@@ -1,7 +1,7 @@
 ```markdown
 # 🔐 Lambda Secret Rotate
 
-This project rotates a secret (like a password) in **AWS Secrets Manager** using an AWS Lambda function.
+This project rotates a secret (like a password) in *AWS Secrets Manager* using an AWS Lambda function.
 
 ---
 
