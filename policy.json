@@ -1,0 +1,35 @@
+{
+    "Version": "2012-10-17",  # 📅 Policy version — always use this standard version
+
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "secretsmanager:DescribeSecret",           # 📘 Describe the secret's metadata
+                "secretsmanager:GetSecretValue",           # 📥 Read secret values
+                "secretsmanager:PutSecretValue",           # 📤 Write updated secret values
+                "secretsmanager:UpdateSecretVersionStage"  # 🔄 Manage versions/stages of the secret
+            ],
+            "Resource": "SecretARN"  # 🏷 Replace this with your actual secret's ARN
+        },
+
+        {
+            "Effect": "Allow",
+            "Action": [
+                "secretsmanager:GetRandomPassword"  # 🔐 Allows generating random passwords via API
+            ],
+            "Resource": "*"  # 🌍 Works globally since this is non-secret-specific
+        },
+
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:CreateNetworkInterface",     # 🛠 Needed for Lambda in VPC
+                "ec2:DeleteNetworkInterface",     # ❌ Delete unused ENIs
+                "ec2:DescribeNetworkInterfaces",  # 🔍 View ENI info
+                "ec2:DetachNetworkInterface"      # 🔓 Detach if needed
+            ],
+            "Resource": "*"  # 🌍 Allows for any ENI (network interfaces)
+        }
+    ]
+}
